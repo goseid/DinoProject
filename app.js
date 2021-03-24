@@ -1,32 +1,39 @@
+// Create Dino Constructor
 
-    // Create Dino Constructor
+// Create Dino Objects
 
+// Create Human Object
 
-    // Create Dino Objects
+// Use IIFE to get human data from form
 
+// Create Dino Compare Method 1
+// NOTE: Weight in JSON file is in lbs, height in inches.
 
-    // Create Human Object
+// Create Dino Compare Method 2
+// NOTE: Weight in JSON file is in lbs, height in inches.
 
-    // Use IIFE to get human data from form
+// Create Dino Compare Method 3
+// NOTE: Weight in JSON file is in lbs, height in inches.
 
+// Generate Tiles for each Dino in Array
 
-    // Create Dino Compare Method 1
-    // NOTE: Weight in JSON file is in lbs, height in inches. 
+// Add tiles to DOM
 
-    
-    // Create Dino Compare Method 2
-    // NOTE: Weight in JSON file is in lbs, height in inches.
-
-    
-    // Create Dino Compare Method 3
-    // NOTE: Weight in JSON file is in lbs, height in inches.
-
-
-    // Generate Tiles for each Dino in Array
-  
-        // Add tiles to DOM
-
-    // Remove form from screen
-
+// Remove form from screen
 
 // On button click, prepare and display infographic
+addButtonFunctionality("btn", compareHandler);
+
+function compareHandler() {
+  document.getElementById("dino-compare").style.display = "none";
+}
+
+function addButtonFunctionality(id, callBack) {
+  let el = document.getElementById(id);
+  el.tabIndex = 0;
+  el.onclick = callBack;
+  el.addEventListener("keyup", (event) => {
+    event.preventDefault();
+    if (event.code === "Space" || event.code === "Enter") compareHandler();
+  });
+}
