@@ -30,6 +30,25 @@ Dino.prototype.render = function (person, parentElement) {
   console.dir(this);
 };
 
+// Read dino.json data
+
+const dinoData = [];
+
+readJSONFile("dino.json", (resp) => {
+  dinoData.push(...JSON.parse(resp).Dinos);
+  console.log("dinoData:", dinoData);
+});
+
+function readJSONFile(file, callback) {
+  const rawFile = new XMLHttpRequest();
+  rawFile.open("GET", file, true);
+  rawFile.onreadystatechange = () => {
+    if (rawFile.readyState === 4 && rawFile.status === 200)
+      callback(rawFile.responseText);
+  };
+  rawFile.send(null);
+}
+
 // Create Dino Objects
 const testDino = new Dino({
   species: "Triceratops",
@@ -45,7 +64,7 @@ const testDino = new Dino({
 function Human(obj) {
   Animal.call(this, obj);
   this.name = obj.name;
-  this.render = function (parent) {
+  this.render = function (parentElement) {
     // since there will only be one Human object adding method here
     // TODO: FIll out render method
     console.dir(this);
