@@ -8,10 +8,8 @@ Object with their properties and methods for the Dino Project.
   - height
   - weight
   - diet
-- Methods
-  - render(person, parent)
 
-## Person - based on Animal
+## Human - based on Animal
 
 - Properties
   - _height_
@@ -21,7 +19,7 @@ Object with their properties and methods for the Dino Project.
 - Methods
   - render(parent)
 
-## Dinosaur - based on Animal
+## Dino - based on Animal
 
 - Properties
   - _height_
@@ -32,21 +30,6 @@ Object with their properties and methods for the Dino Project.
   - period
   - fact
 - Methods
-  - _render_
+  - render(person, parent)
 - Functions
   - getFact(person)
-
-## Pigeon - based on Dinosaur
-
-- Properties
-  - _height_
-  - _weight_
-  - _diet_
-  - _species_
-  - _region_
-  - _period_
-  - _fact_
-- Methods
-  - _render_
-- Functions
-  - getFact()
