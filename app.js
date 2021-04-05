@@ -127,6 +127,7 @@ function Human(obj) {
 Human.prototype = Object.create(Animal.prototype);
 
 // Create Human Object
+let human = {};
 const testHuman = new Human({
   name: "Ian Malcolm",
   height: 76,
@@ -151,8 +152,19 @@ function compareHandler() {
   document.getElementById("dino-compare").style.display = "none";
 
   // Use IIFE to get human data from form
+  human = (function () {
+    let height =
+      parseInt(document.getElementById("feet").value * 12) +
+      parseInt(document.getElementById("inches").value);
 
-  populateAnimals(testHuman);
+    return new Human({
+      name: document.getElementById("name").value,
+      height: height,
+      weight: parseInt(document.getElementById("weight").value),
+      diet: document.getElementById("diet").value,
+    });
+  })();
+  populateAnimals(human);
 }
 
 function addButtonFunctionality(id, callBack) {
