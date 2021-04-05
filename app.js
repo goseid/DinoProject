@@ -12,26 +12,40 @@ function Dino(obj) {
   this.region = obj.where;
   this.period = obj.when;
   this.fact = obj.fact;
-  if (obj.species === "Pigeon") {
-    // return standard fact for pigeons
+
+  // Return standard fact for pigeons
+  if (obj.species === "Pigeon")
     this.getFact = function () {
       return this.fact;
     };
-  }
 }
 
 Dino.prototype = Object.create(Animal.prototype);
 Dino.prototype.getFact = function () {
-  // TODO: FIll out getFact method
-};
-Dino.prototype.render = function (person, parentElement) {
-  // Function on new prototype, not inherited
-  // TODO: FIll out render method
-  console.dir(this);
+  // TODO: return randomized facts
+  return this.fact;
 };
 
-// Read dino.json data
+Dino.prototype.render = function (parentElement, person) {
+  const tile = document.createElement("div");
+  tile.className = "grid-item";
 
+  const heading = document.createElement("h3");
+  heading.innerText = this.species;
+  tile.appendChild(heading);
+
+  const image = document.createElement("img");
+  image.setAttribute("src", `images/${this.species.toLowerCase()}.png`);
+  tile.appendChild(image);
+
+  const fact = document.createElement("p");
+  fact.innerText = this.getFact(person);
+  tile.appendChild(fact);
+
+  parentElement.appendChild(tile);
+};
+
+// Read dino.json data, push it into dinoData array
 const dinoData = [];
 
 readJSONFile("dino.json", (resp) => {
@@ -50,31 +64,67 @@ function readJSONFile(file, callback) {
 }
 
 // Create Dino Objects
-const testDino = new Dino({
-  species: "Triceratops",
-  weight: 13000,
-  height: 114,
-  diet: "herbivore",
-  where: "North America",
-  when: "Late Cretaceous",
-  fact: "First discovered in 1889 by Othniel Charles Marsh",
-});
+const animals = [];
+
+function populateAnimals(person) {
+  // Copy dinoData array into dinoOptions (retain original for next run)
+  const dinoOptions = [...dinoData];
+
+  // Find the pigeon remove it from the new array and set it aside
+  const pigeonIndex = dinoOptions.findIndex(
+    (dino) => dino.species === "Pigeon"
+  );
+  const pigeon = new Dino(dinoOptions.splice(pigeonIndex, 1)[0]);
+
+  // Ensure animals array is empty
+  animals.splice(0, animals.length);
+
+  // Randomly choose 6 dinos and insert in animals array.
+  // This allows randomly choosing from more than eight dinos
+  // if more are added to the JSON document.
+  for (i = 0; i < 7; i++) {
+    const index = Math.floor(Math.random() * dinoOptions.length);
+    console.log("Random Number" + index);
+    const newDino = new Dino(dinoOptions.splice(index, 1)[0]);
+    animals.push(newDino);
+  }
+
+  // Place the pigeon in a random place in the animals array
+  const index = Math.floor(Math.random() * 7);
+  animals.splice(index, 0, pigeon);
+
+  // Insert the human in the center of the animals array
+  animals.splice(4, 0, person);
+
+  // Generate Tiles for each Dino in Array
+  // Add tiles to DOM
+  for (const animal of animals) {
+    animal.render(document.getElementById("grid"));
+  }
+}
 
 // Create Human Constructor
 function Human(obj) {
   Animal.call(this, obj);
   this.name = obj.name;
   this.render = function (parentElement) {
-    // since there will only be one Human object adding method here
-    // TODO: FIll out render method
-    console.dir(this);
+    // Since there will only be one Human object adding method here
+    const tile = document.createElement("div");
+    tile.className = "grid-item";
+
+    const h3 = document.createElement("h3");
+    h3.innerText = this.name;
+    tile.appendChild(h3);
+
+    const image = document.createElement("img");
+    image.setAttribute("src", `images/human.png`);
+    tile.appendChild(image);
+
+    parentElement.appendChild(tile);
   };
 }
 
 Human.prototype = Object.create(Animal.prototype);
-// Human.prototype.render = function(parent) {
-//    NOTE: This is where to override the method on prototype
-// }
 
 // Create Human Object
 const testHuman = new Human({
@@ -83,8 +133,6 @@ const testHuman = new Human({
   weight: 197,
   diet: "carnivore",
 });
-
-// Use IIFE to get human data from form
 
 // Create Dino Compare Method 1
 // NOTE: Weight in JSON file is in lbs, height in inches.
@@ -95,17 +143,16 @@ const testHuman = new Human({
 // Create Dino Compare Method 3
 // NOTE: Weight in JSON file is in lbs, height in inches.
 
-// Generate Tiles for each Dino in Array
-
-// Add tiles to DOM
-
-// Remove form from screen
-
 // On button click, prepare and display infographic
 addButtonFunctionality("btn", compareHandler);
 
 function compareHandler() {
+  // Remove form from screen
   document.getElementById("dino-compare").style.display = "none";
+
+  // Use IIFE to get human data from form
+
+  populateAnimals(testHuman);
 }
 
 function addButtonFunctionality(id, callBack) {
@@ -117,3 +164,11 @@ function addButtonFunctionality(id, callBack) {
     if (event.code === "Space" || event.code === "Enter") compareHandler();
   });
 }
+
+// TODO: Remove test data fill
+// Load form with test data to simplify testing
+document.getElementById("name").value = "Ian Malcolm";
+document.getElementById("feet").value = 6;
+document.getElementById("inches").value = 4;
+document.getElementById("weight").value = 197;
+document.getElementById("diet").selectedIndex = Math.floor(Math.random() * 3);
