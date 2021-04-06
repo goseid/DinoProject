@@ -152,10 +152,14 @@ function populateAnimals(person) {
   // Insert the human in the center of the animals array
   animals.splice(4, 0, person);
 
+  // Ensure the grid is empty
+  const grid = document.getElementById("grid");
+  removeAllChildNodes(grid);
+
   // Generate Tiles for each Dino in Array
   // Add tiles to DOM
   for (const animal of animals) {
-    animal.render(document.getElementById("grid"), human);
+    animal.render(grid, person);
   }
 }
 
@@ -189,22 +193,31 @@ let human = {};
 addButtonFunctionality("btn", compareHandler);
 
 function compareHandler() {
-  // Remove form from screen
-  document.getElementById("dino-compare").style.display = "none";
+  // If this is the first time compare has been clicked
+  const btn = document.getElementById("btn");
+  if (btn.innerText !== "Compare Me Again!") {
+    // Remove form from screen
+    document.getElementById("dino-compare").style.display = "none";
 
-  // Use IIFE to get human data from form
-  human = (function () {
-    let height =
-      parseInt(document.getElementById("feet").value * 12) +
-      parseInt(document.getElementById("inches").value);
+    // Use IIFE to get human data from form
+    human = (function () {
+      let height =
+        parseInt(document.getElementById("feet").value * 12) +
+        parseInt(document.getElementById("inches").value);
 
-    return new Human({
-      name: document.getElementById("name").value,
-      height: height,
-      weight: parseInt(document.getElementById("weight").value),
-      diet: document.getElementById("diet").value,
-    });
-  })();
+      return new Human({
+        name: document.getElementById("name").value,
+        height: height,
+        weight: parseInt(document.getElementById("weight").value),
+        diet: document.getElementById("diet").value,
+      });
+    })();
+
+    // Move button to footer and change label to Compare Me Again!
+    btn.innerText = "Compare Me Again!";
+    document.getElementsByTagName("footer")[0].prepend(btn);
+  }
+
   populateAnimals(human);
 }
 
@@ -216,6 +229,15 @@ function addButtonFunctionality(id, callBack) {
     event.preventDefault();
     if (event.code === "Space" || event.code === "Enter") compareHandler();
   });
+}
+
+// Add button to compare again
+
+// function to remove all child nodes from container
+function removeAllChildNodes(parent) {
+  while (parent.firstChild) {
+    parent.removeChild(parent.firstChild);
+  }
 }
 
 // TODO: Remove test data fill
