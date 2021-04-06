@@ -2,7 +2,7 @@
 function Animal(obj) {
   this.height = obj.height;
   this.weight = obj.weight;
-  this.diet = obj.diet;
+  this.diet = obj.diet.toLowerCase();
 }
 
 // Create Dino Constructor
@@ -21,9 +21,65 @@ function Dino(obj) {
 }
 
 Dino.prototype = Object.create(Animal.prototype);
-Dino.prototype.getFact = function () {
-  // TODO: return randomized facts
-  return this.fact;
+
+// Create Dino Compare Method 1
+// NOTE: Weight in JSON file is in lbs.
+Dino.prototype.compareWeight = function (person) {
+  if (this.weight < person.weight)
+    return (
+      "You are the same weight as " +
+      Math.round((person.weight / this.weight) * 10) / 10 +
+      ` typical ${this.species}s.`
+    );
+  if (this.weight > person.weight)
+    return (
+      `The typical ${this.species} weighs ` +
+      Math.round(this.weight - person.weight) +
+      " pounds more than you."
+    );
+  return `You weigh the same as the typical ${this.species}.`;
+};
+
+// Create Dino Compare Method 2
+// NOTE: Height in JSON file is in inches.
+Dino.prototype.compareHeight = function (person) {
+  const diff = this.height - person.height;
+  if (diff === 0) return `You are the same weight as a ${this.species}`;
+  const feetDiff = Math.floor(Math.abs(diff / 12));
+  const inchDiff = Math.round(Math.abs(diff % 12));
+  const diffString =
+    (feetDiff ? `${feetDiff} ${feetDiff == 1 ? "foot" : "feet"} ` : "") +
+    (inchDiff ? `${inchDiff} inches ` : "");
+  return (
+    `The typical ${this.species} is ` +
+    diffString +
+    (diff > 0 ? "taller " : "shorter ") +
+    "than you."
+  );
+};
+
+// Create Dino Compare Method 3
+Dino.prototype.compareDiet = function (person) {
+  if (this.diet == person.diet)
+    return `You and the ${this.species} are both ${this.diet}s.`;
+  return `The ${this.species} was a ${this.diet}.`;
+};
+
+Dino.prototype.getFact = function (person) {
+  // create array to hold all facts per dino
+  // allows for easy addition of compare methods
+  const facts = [];
+
+  // add original fact
+  facts.push(this.fact);
+
+  // add alternate facts
+  facts.push(this.compareWeight(person));
+  facts.push(this.compareHeight(person));
+  facts.push(this.compareDiet(person));
+
+  // Randomly return one of the facts for each dino
+  return facts[Math.floor(Math.random() * facts.length)];
 };
 
 Dino.prototype.render = function (parentElement, person) {
@@ -99,7 +155,7 @@ function populateAnimals(person) {
   // Generate Tiles for each Dino in Array
   // Add tiles to DOM
   for (const animal of animals) {
-    animal.render(document.getElementById("grid"));
+    animal.render(document.getElementById("grid"), human);
   }
 }
 
@@ -128,21 +184,6 @@ Human.prototype = Object.create(Animal.prototype);
 
 // Create Human Object
 let human = {};
-const testHuman = new Human({
-  name: "Ian Malcolm",
-  height: 76,
-  weight: 197,
-  diet: "carnivore",
-});
-
-// Create Dino Compare Method 1
-// NOTE: Weight in JSON file is in lbs, height in inches.
-
-// Create Dino Compare Method 2
-// NOTE: Weight in JSON file is in lbs, height in inches.
-
-// Create Dino Compare Method 3
-// NOTE: Weight in JSON file is in lbs, height in inches.
 
 // On button click, prepare and display infographic
 addButtonFunctionality("btn", compareHandler);
