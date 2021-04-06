@@ -33,7 +33,7 @@ Dino.prototype.compareWeight = function (person) {
     );
   if (this.weight > person.weight)
     return (
-      `The typical ${this.species} weighs ` +
+      `The typical ${this.species} weighed ` +
       Math.round(this.weight - person.weight) +
       " pounds more than you."
     );
@@ -51,7 +51,7 @@ Dino.prototype.compareHeight = function (person) {
     (feetDiff ? `${feetDiff} ${feetDiff == 1 ? "foot" : "feet"} ` : "") +
     (inchDiff ? `${inchDiff} inches ` : "");
   return (
-    `The typical ${this.species} is ` +
+    `The typical ${this.species} was ` +
     diffString +
     (diff > 0 ? "taller " : "shorter ") +
     "than you."
@@ -106,7 +106,6 @@ const dinoData = [];
 
 readJSONFile("dino.json", (resp) => {
   dinoData.push(...JSON.parse(resp).Dinos);
-  console.log("dinoData:", dinoData);
 });
 
 function readJSONFile(file, callback) {
@@ -140,7 +139,6 @@ function populateAnimals(person) {
   // if more are added to the JSON document.
   for (i = 0; i < 7; i++) {
     const index = Math.floor(Math.random() * dinoOptions.length);
-    console.log("Random Number" + index);
     const newDino = new Dino(dinoOptions.splice(index, 1)[0]);
     animals.push(newDino);
   }
