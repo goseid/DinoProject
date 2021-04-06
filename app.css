@@ -43,6 +43,7 @@ p {
     margin: 2em;
     box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
     flex-wrap: wrap;
+    border-radius: 20px;
 }
 
 .grid-item {
@@ -53,6 +54,7 @@ p {
 
 .grid-item:nth-child(1){
     background: #009687f5;
+    border-top-left-radius: 20px;
 }
 
 .grid-item:nth-child(2){
@@ -61,6 +63,7 @@ p {
 
 .grid-item:nth-child(3){
     background: #4bb3c1fa;
+    border-top-right-radius: 20px;
 }
 
 .grid-item:nth-child(4){
@@ -77,6 +80,11 @@ p {
 
 .grid-item:nth-child(7){
     background: #7f62b3fa;
+    border-bottom-left-radius: 20px;
+}
+
+.grid-item:nth-child(7) p{
+    border-bottom-left-radius: 20px;
 }
 
 .grid-item:nth-child(8){
@@ -85,6 +93,11 @@ p {
 
 .grid-item:nth-child(9){
     background: #677bcbfa;
+    border-bottom-right-radius: 20px;
+}
+
+.grid-item:nth-child(9) p {
+    border-bottom-right-radius: 20px;
 }
 
 @media (min-width: 550px) {
@@ -94,13 +107,15 @@ p {
 }
 
 .grid-item h3 {
-    font-size: 2em;
+    font-size: 3.4vw;
     color: #eee;
+    margin-block-start: 2vw;
+    margin-block-end: 1vw;
 }
 
 .grid-item img {
     max-width: 100%;
-    padding-bottom: 1em;
+    padding-bottom: 2em;
 }
 
 .grid-item p {
@@ -111,9 +126,11 @@ p {
     padding: 0.8em 0.8em 1.8em;
     margin:0;
     box-sizing: border-box;
-    font-size: 1.2em;
+    font-size: 1.5vw;
     font-weight: 600;
     color: #fff;
+    line-height: 2vw;
+    height: 6vw;
 }
 
 /* Form Styles */
