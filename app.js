@@ -45,14 +45,9 @@ Dino.prototype.compareWeight = function (person) {
 Dino.prototype.compareHeight = function (person) {
   const diff = this.height - person.height;
   if (diff === 0) return `You are the same weight as a ${this.species}`;
-  // const feetDiff = Math.floor(Math.abs(diff / 12));
-  // const inchDiff = Math.round(Math.abs(diff % 12));
-  // const diffString =
-  //   (feetDiff ? `${feetDiff} ${feetDiff == 1 ? "foot" : "feet"} ` : "") +
-  //   (inchDiff ? `${inchDiff} inches ` : "");
   return (
     `The typical ${this.species} was ` +
-    formatInches(this.height) +
+    formatInches(diff) +
     (diff > 0 ? " taller " : " shorter ") +
     "than you."
   );
@@ -80,6 +75,7 @@ Dino.prototype.getFact = function (person) {
     );
   };
 
+  // adds " and" after the last comma in text
   commaAnd = function (text) {
     const pos = text.lastIndexOf(",");
     if (pos > 0)
@@ -92,9 +88,7 @@ Dino.prototype.getFact = function (person) {
   facts.push(
     `An average ${this.species} stood ${formatInches(this.height)} tall.`
   );
-  facts.push(
-    `The average ${this.species} weighed in at ${this.weight} pounds.`
-  );
+  facts.push(`The average ${this.species} weighed ${this.weight} pounds.`);
   facts.push(
     `The ${this.species} could be found in ` + `${commaAnd(this.region)}.`
   );
@@ -264,11 +258,3 @@ function removeAllChildNodes(parent) {
     parent.removeChild(parent.firstChild);
   }
 }
-
-// TODO: Remove test data fill
-// Load form with test data to simplify testing
-document.getElementById("name").value = "Ian Malcolm";
-document.getElementById("feet").value = 6;
-document.getElementById("inches").value = 4;
-document.getElementById("weight").value = 197;
-document.getElementById("diet").selectedIndex = Math.floor(Math.random() * 3);
