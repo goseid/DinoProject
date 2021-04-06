@@ -165,7 +165,7 @@ function populateAnimals(person) {
   }
 
   // Place the pigeon in a random place in the animals array
-  const index = Math.floor(Math.random() * 7);
+  const index = Math.floor(Math.random() * 8);
   animals.splice(index, 0, pigeon);
 
   // Insert the human in the center of the animals array
