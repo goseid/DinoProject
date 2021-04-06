@@ -45,15 +45,15 @@ Dino.prototype.compareWeight = function (person) {
 Dino.prototype.compareHeight = function (person) {
   const diff = this.height - person.height;
   if (diff === 0) return `You are the same weight as a ${this.species}`;
-  const feetDiff = Math.floor(Math.abs(diff / 12));
-  const inchDiff = Math.round(Math.abs(diff % 12));
-  const diffString =
-    (feetDiff ? `${feetDiff} ${feetDiff == 1 ? "foot" : "feet"} ` : "") +
-    (inchDiff ? `${inchDiff} inches ` : "");
+  // const feetDiff = Math.floor(Math.abs(diff / 12));
+  // const inchDiff = Math.round(Math.abs(diff % 12));
+  // const diffString =
+  //   (feetDiff ? `${feetDiff} ${feetDiff == 1 ? "foot" : "feet"} ` : "") +
+  //   (inchDiff ? `${inchDiff} inches ` : "");
   return (
     `The typical ${this.species} was ` +
-    diffString +
-    (diff > 0 ? "taller " : "shorter ") +
+    formatInches(this.height) +
+    (diff > 0 ? " taller " : " shorter ") +
     "than you."
   );
 };
@@ -70,8 +70,35 @@ Dino.prototype.getFact = function (person) {
   // allows for easy addition of compare methods
   const facts = [];
 
-  // add original fact
+  formatInches = function (inches) {
+    const feetDiff = Math.floor(Math.abs(inches / 12));
+    const inchDiff = Math.round(Math.abs(inches % 12));
+    return (
+      (feetDiff ? `${feetDiff} ${feetDiff == 1 ? "foot" : "feet"}` : "") +
+      (feetDiff && inchDiff ? " " : "") +
+      (inchDiff ? `${inchDiff} inches` : "")
+    );
+  };
+
+  commaAnd = function (text) {
+    const pos = text.lastIndexOf(",");
+    if (pos > 0)
+      return text.substring(0, pos) + ", and " + text.substring(pos + 1);
+    return text;
+  };
+
+  // add original facts
   facts.push(this.fact);
+  facts.push(
+    `An average ${this.species} stood ${formatInches(this.height)} tall.`
+  );
+  facts.push(
+    `The average ${this.species} weighed in at ${this.weight} pounds.`
+  );
+  facts.push(
+    `The ${this.species} could be found in ` + `${commaAnd(this.region)}.`
+  );
+  facts.push(`The ${this.species} lived during the ${this.period} period.`);
 
   // add alternate facts
   facts.push(this.compareWeight(person));
